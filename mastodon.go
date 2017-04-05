@@ -56,7 +56,7 @@ func NewApp(name, uris string, scopes []string, website string) (*App, error) {
 	}, nil
 }
 
-func (app *App) AuthCodeURL() string {
+func (app App) AuthCodeURL() string {
 	return app.Config.AuthCodeURL("state", oauth2.AccessTypeOffline)
 }
 
@@ -75,13 +75,13 @@ func (app *App) SetToken(token string) {
 	}
 }
 
-func (app *App) Do(method string, endpoint string) (io.ReadCloser, error) {
+func (app App) Do(method string, endpoint string) (io.ReadCloser, error) {
 	client := &http.Client{}
 	req, err := http.NewRequest(method, base+endpoint, nil)
 	if err != nil {
 		return nil, fmt.Errorf("could not create request to %s: %v", endpoint, err)
 	}
-	req.Header.Set("Authorization", "Bearer "+app.Token.AccessToken)
+	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", app.Token.AccessToken))
 	res, err := client.Do(req)
 	if err != nil {
 		return nil, fmt.Errorf("could not execute %s: %v", endpoint, err)
@@ -95,15 +95,29 @@ func (app *App) Do(method string, endpoint string) (io.ReadCloser, error) {
 	}
 }
 
-func (app *App) Get(endpoint string) (io.ReadCloser, error) {
+func (app App) Get(endpoint string) (io.ReadCloser, error) {
 	return app.Do(http.MethodGet, endpoint)
 }
 
-func (app *App) Post(endpoint string) (io.ReadCloser, error) {
+func (app App) Post(endpoint string) (io.ReadCloser, error) {
 	return app.Do(http.MethodPost, endpoint)
 }
 
-func (app *App) getError(r io.ReadCloser) error {
+func (app App) generic(method, endpoint string, dest interface{}) error {
+	r, err := app.Do(method, endpoint)
+	if err != nil {
+		return fmt.Errorf("could not %s %s: %v", method, endpoint, err)
+	}
+	defer r.Close()
+
+	if err := json.NewDecoder(r).Decode(dest); err != nil {
+		return fmt.Errorf("could not decode %s: %v", endpoint, err)
+	}
+
+	return nil
+}
+
+func (app App) getError(r io.ReadCloser) error {
 	defer r.Close()
 	res := &struct {
 		Error string `json:"error"`
@@ -114,92 +128,58 @@ func (app *App) getError(r io.ReadCloser) error {
 	return errors.New(res.Error)
 }
 
-func (app *App) VerifyCredentials() (*Account, error) {
-	r, err := app.Get("accounts/verify_credentials")
-	if err != nil {
-		return nil, fmt.Errorf("could not verify credentials: %v", err)
+func (app App) VerifyCredentials() (Account, error) {
+	end := "accounts/verify_credentials"
+	acc := Account{}
+	if err := app.generic(http.MethodGet, end, &acc); err != nil {
+		return Account(acc), err
 	}
-	defer r.Close()
-
-	acc := &Account{}
-	if err := json.NewDecoder(r).Decode(acc); err != nil {
-		return nil, fmt.Errorf("could not decode credentials: %v", err)
-	}
-
-	return acc, nil
+	return Account(acc), nil
 }
 
-func (app *App) GetAccount(id int) (*Account, error) {
-	r, err := app.Get(fmt.Sprintf("accounts/%d", id))
-	if err != nil {
-		return nil, fmt.Errorf("could not get account %d: %v", id, err)
+func (app App) GetAccount(id int) (Account, error) {
+	end := fmt.Sprintf("accounts/%d", id)
+	acc := Account{}
+	if err := app.generic(http.MethodGet, end, &acc); err != nil {
+		return Account(acc), err
 	}
-	defer r.Close()
-
-	acc := &Account{}
-	if err := json.NewDecoder(r).Decode(acc); err != nil {
-		return nil, fmt.Errorf("could not decode account %d: %v", id, err)
-	}
-
-	return acc, nil
+	return Account(acc), nil
 }
 
-func (app *App) GetFollowers(id int) ([]Account, error) {
-	r, err := app.Get(fmt.Sprintf("accounts/%d/followers", id))
-	if err != nil {
-		return nil, fmt.Errorf("could not get followers %d: %v", id, err)
-	}
-	defer r.Close()
-
+func (app App) GetFollowers(id int) ([]Account, error) {
+	end := fmt.Sprintf("accounts/%d/followers", id)
 	accs := []Account{}
-	if err := json.NewDecoder(r).Decode(&accs); err != nil {
-		return nil, fmt.Errorf("could not decode followers %d: %v", id, err)
+	if err := app.generic(http.MethodGet, end, &accs); err != nil {
+		return []Account(accs), err
 	}
-
-	return accs, nil
+	return []Account(accs), nil
 }
 
 func (app *App) GetFollowing(id int) ([]Account, error) {
-	r, err := app.Get(fmt.Sprintf("accounts/%d/following", id))
-	if err != nil {
-		return nil, fmt.Errorf("could not get following %d: %v", id, err)
-	}
-	defer r.Close()
-
+	end := fmt.Sprintf("accounts/%d/following", id)
 	accs := []Account{}
-	if err := json.NewDecoder(r).Decode(&accs); err != nil {
-		return nil, fmt.Errorf("could not decode following %d: %v", id, err)
+	if err := app.generic(http.MethodGet, end, &accs); err != nil {
+		return []Account(accs), err
 	}
-
-	return accs, nil
+	return []Account(accs), nil
 }
 
-func (app *App) Follow(id int) (*Account, error) {
-	r, err := app.Post(fmt.Sprintf("accounts/%d/follow", id))
-	if err != nil {
-		return nil, fmt.Errorf("could not follow %d: %v", id, err)
+func (app App) Follow(id int) (Account, error) {
+	end := fmt.Sprintf("accounts/%d/follow", id)
+	acc := Account{}
+	if err := app.generic(http.MethodPost, end, &acc); err != nil {
+		return Account(acc), err
 	}
-	defer r.Close()
-
-	acc := &Account{}
-	if err := json.NewDecoder(r).Decode(acc); err != nil {
-		return nil, fmt.Errorf("could not follow %d: %v", id, err)
-	}
-	return acc, nil
+	return Account(acc), nil
 }
 
-func (app *App) Unfollow(id int) (*Account, error) {
-	r, err := app.Post(fmt.Sprintf("accounts/%d/unfollow", id))
-	if err != nil {
-		return nil, fmt.Errorf("could not follow %d: %v", id, err)
+func (app App) Unfollow(id int) (Account, error) {
+	end := fmt.Sprintf("accounts/%d/unfollow", id)
+	acc := Account{}
+	if err := app.generic(http.MethodPost, end, &acc); err != nil {
+		return Account(acc), err
 	}
-	defer r.Close()
-
-	acc := &Account{}
-	if err := json.NewDecoder(r).Decode(acc); err != nil {
-		return nil, fmt.Errorf("could not follow %d: %v", id, err)
-	}
-	return acc, nil
+	return Account(acc), nil
 }
 
 type Account struct {
