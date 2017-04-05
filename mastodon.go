@@ -132,54 +132,54 @@ func (app App) VerifyCredentials() (Account, error) {
 	end := "accounts/verify_credentials"
 	acc := Account{}
 	if err := app.generic(http.MethodGet, end, &acc); err != nil {
-		return Account(acc), err
+		return acc, err
 	}
-	return Account(acc), nil
+	return acc, nil
 }
 
 func (app App) GetAccount(id int) (Account, error) {
 	end := fmt.Sprintf("accounts/%d", id)
 	acc := Account{}
 	if err := app.generic(http.MethodGet, end, &acc); err != nil {
-		return Account(acc), err
+		return acc, err
 	}
-	return Account(acc), nil
+	return acc, nil
 }
 
 func (app App) GetFollowers(id int) ([]Account, error) {
 	end := fmt.Sprintf("accounts/%d/followers", id)
 	accs := []Account{}
 	if err := app.generic(http.MethodGet, end, &accs); err != nil {
-		return []Account(accs), err
+		return accs, err
 	}
-	return []Account(accs), nil
+	return accs, nil
 }
 
 func (app *App) GetFollowing(id int) ([]Account, error) {
 	end := fmt.Sprintf("accounts/%d/following", id)
 	accs := []Account{}
 	if err := app.generic(http.MethodGet, end, &accs); err != nil {
-		return []Account(accs), err
+		return accs, err
 	}
-	return []Account(accs), nil
+	return accs, nil
 }
 
 func (app App) Follow(id int) (Account, error) {
 	end := fmt.Sprintf("accounts/%d/follow", id)
 	acc := Account{}
 	if err := app.generic(http.MethodPost, end, &acc); err != nil {
-		return Account(acc), err
+		return acc, err
 	}
-	return Account(acc), nil
+	return acc, nil
 }
 
 func (app App) Unfollow(id int) (Account, error) {
 	end := fmt.Sprintf("accounts/%d/unfollow", id)
 	acc := Account{}
 	if err := app.generic(http.MethodPost, end, &acc); err != nil {
-		return Account(acc), err
+		return acc, err
 	}
-	return Account(acc), nil
+	return acc, nil
 }
 
 type Account struct {
