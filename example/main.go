@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/bakerolls/mastodon"
+	"github.com/BakeRolls/mastodon-go"
 )
 
 func main() {
@@ -22,9 +22,11 @@ func main() {
 		fmt.Printf("goto: %s\ntoken: ", url)
 		fmt.Scanf("%s", token)
 
-		if err := app.Exchange(*token); err != nil {
+		token, err := app.Exchange(*token)
+		if err != nil {
 			log.Fatal(err)
 		}
+		app.SetToken(token.AccessToken)
 		fmt.Printf("access token: %s\n", app.Token.AccessToken)
 	} else {
 		app.SetToken(*token)
@@ -35,4 +37,36 @@ func main() {
 		log.Fatal(err)
 	}
 	fmt.Printf("signed in as %s\n", user.Username)
+
+	// users, err := app.SearchAccount("bak", 100)
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
+	// for _, user := range users {
+	// 	fmt.Println(user.Username)
+	// }
+
+	// followers, err := app.GetFollowers(user.ID)
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
+	// for _, follower := range followers {
+	// 	fmt.Printf("%d %s\n", follower.ID, follower.Username)
+	// }
+
+	// rels, err := app.Relationships(user.ID, 34733)
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
+	// for _, rel := range rels {
+	// 	fmt.Printf("%+v\n", rel)
+	// }
+
+	// statuses, err := app.GetStatuses(user.ID)
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
+	// for _, status := range statuses {
+	// 	fmt.Printf("%s: %s\n", status.CreatedAt, status.Content)
+	// }
 }
