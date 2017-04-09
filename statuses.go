@@ -59,7 +59,12 @@ func (statuses Statuses) Favourits(id int) ([]Account, error) {
 	return a, nil
 }
 
-// Update posts and returns a new status.
+// Update posts and returns a new status. Accepted params are:
+// in_reply_to_id: local ID of the status you want to reply to
+// media_ids: array of media IDs to attach to the status (maximum 4)
+// sensitive: set this to mark the media of the status as NSFW
+// spoiler_text: text to be shown as a warning before the actual content
+// visibility: either "direct", "private", "unlisted" or "public"
 func (statuses Statuses) Update(status string, v url.Values) (Status, error) {
 	s := Status{}
 	if v == nil {

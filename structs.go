@@ -1,19 +1,19 @@
 package mastodon
 
 type Account struct {
-	ID          int    `json:"id"`              //The ID of the account
-	Username    string `json:"username"`        //The username of the account
-	Acct        string `json:"acct"`            //Equals username for local users, includes @domain for remote ones
-	DisplayName string `json:"display_name"`    //The account's display name
-	Note        string `json:"note"`            //Biography of user
-	URL         string `json:"url"`             //URL of the user's profile page (can be remote)
-	Avatar      string `json:"avatar"`          //URL to the avatar image
-	Header      string `json:"header"`          //URL to the header image
-	Locked      bool   `json:"locked"`          //Boolean for when the account cannot be followed without waiting for approval first
-	CreatedAt   string `json:"created_at"`      //The time the account was created
-	Followers   int    `json:"followers_count"` //The number of followers for the account
-	Following   int    `json:"following_count"` //The number of accounts the given account is following
-	Statuses    int    `json:"statuses_count"`  //The number of statuses the account has made
+	ID          int    `json:"id"`              // The ID of the account
+	Username    string `json:"username"`        // The username of the account
+	Acct        string `json:"acct"`            // Equals username for local users, includes @domain for remote ones
+	DisplayName string `json:"display_name"`    // The account's display name
+	Note        string `json:"note"`            // Biography of user
+	URL         string `json:"url"`             // URL of the user's profile page (can be remote)
+	Avatar      string `json:"avatar"`          // URL to the avatar image
+	Header      string `json:"header"`          // URL to the header image
+	Locked      bool   `json:"locked"`          // Boolean for when the account cannot be followed without waiting for approval first
+	CreatedAt   string `json:"created_at"`      // The time the account was created
+	Followers   int    `json:"followers_count"` // The number of followers for the account
+	Following   int    `json:"following_count"` // The number of accounts the given account is following
+	Statuses    int    `json:"statuses_count"`  // The number of statuses the account has made
 }
 
 type Application struct {
@@ -91,26 +91,26 @@ type Results struct {
 }
 
 type Status struct {
-	ID                 uint         `json:"id"`                     //The ID of the status
-	URI                string       `json:"uri"`                    //A Fediverse-unique resource ID
-	URL                string       `json:"url"`                    //URL to the status page (can be remote)
-	Account            *Account     `json:"account"`                //The Account which posted the status
-	InReplyToID        uint         `json:"in_reply_to_id"`         //null or the ID of the status it replies to
-	InReplyToAccountID uint         `json:"in_reply_to_account_id"` //null or the ID of the account it replies to
-	Reblog             *Status      `json:"reblog"`                 //null or the reblogged Status
-	Content            string       `json:"content"`                //Body of the status; this will contain HTML (remote HTML already sanitized)
-	CreatedAt          string       `json:"created_at"`             //The time the status was created
-	Reblogs            uint         `json:"reblogs_count"`          //The number of reblogs for the status
-	Favourites         uint         `json:"favourites_count"`       //The number of favourites for the status
-	Reblogged          bool         `json:"reblogged"`              //Whether the authenticated user has reblogged the status
-	Favourited         bool         `json:"favourited"`             //Whether the authenticated user has favourited the status
-	Sensitive          bool         `json:"sensitive"`              //Whether media attachments should be hidden by default
-	SpoilerText        string       `json:"spoiler_text"`           //If not empty, warning text that should be displayed before the actual content
-	Visibility         string       `json:"visibility"`             //One of: public, unlisted, private, direct
-	MediaAttachments   []Attachment `json:"media_attachments"`      //An array of Attachments
-	Mentions           []Mention    `json:"mentions"`               //An array of Mentions
-	Tags               []Tag        `json:"tags"`                   //An array of Tags
-	Application        *Application `json:"application"`            //Application from which the status was posted
+	ID                 uint         `json:"id"`                     // The ID of the status
+	URI                string       `json:"uri"`                    // A Fediverse-unique resource ID
+	URL                string       `json:"url"`                    // URL to the status page (can be remote)
+	Account            *Account     `json:"account"`                // The Account which posted the status
+	InReplyToID        uint         `json:"in_reply_to_id"`         // null or the ID of the status it replies to
+	InReplyToAccountID uint         `json:"in_reply_to_account_id"` // null or the ID of the account it replies to
+	Reblog             *Status      `json:"reblog"`                 // null or the reblogged Status
+	Content            string       `json:"content"`                // Body of the status; this will contain HTML (remote HTML already sanitized)
+	CreatedAt          string       `json:"created_at"`             // The time the status was created
+	Reblogs            uint         `json:"reblogs_count"`          // The number of reblogs for the status
+	Favourites         uint         `json:"favourites_count"`       // The number of favourites for the status
+	Reblogged          bool         `json:"reblogged"`              // Whether the authenticated user has reblogged the status
+	Favourited         bool         `json:"favourited"`             // Whether the authenticated user has favourited the status
+	Sensitive          bool         `json:"sensitive"`              // Whether media attachments should be hidden by default
+	SpoilerText        string       `json:"spoiler_text"`           // If not empty, warning text that should be displayed before the actual content
+	Visibility         string       `json:"visibility"`             // One of: public, unlisted, private, direct
+	MediaAttachments   []Attachment `json:"media_attachments"`      // An array of Attachments
+	Mentions           []Mention    `json:"mentions"`               // An array of Mentions
+	Tags               []Tag        `json:"tags"`                   // An array of Tags
+	Application        *Application `json:"application"`            // Application from which the status was posted
 }
 
 type Tag struct {

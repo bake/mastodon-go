@@ -87,6 +87,6 @@ func (app App) Exchange(code string) (*oauth2.Token, error) {
 }
 
 // SetToken saves the AccessToken in struct.
-func (app *App) SetToken(token string) {
+func (app App) SetToken(token string) {
 	app.API.AccessToken = token
 }
