@@ -17,8 +17,11 @@ type Account struct {
 }
 
 type Application struct {
-	Name    string `json:"name"`    // Name of the app
-	Website string `json:"website"` // Homepage URL of the app
+	ID           uint   `json:"id"`
+	ClientID     string `json:"client_id"`
+	ClientSecret string `json:"client_secret"`
+	Name         string `json:"name"`    // Name of the app
+	Website      string `json:"website"` // Homepage URL of the app
 }
 
 type Attachment struct {

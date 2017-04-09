@@ -1,11 +1,13 @@
 package mastodon
 
-import "net/http"
+type Mutes struct {
+	api *API
+}
 
-// GetMutes returns an attachment that can be used when creating a status.
-func (app App) GetMutes() ([]Account, error) {
+// Get returns an attachment that can be used when creating a status.
+func (mutes Mutes) Get() ([]Account, error) {
 	a := []Account{}
-	if err := app.generic(http.MethodGet, "mutes", nil, &a); err != nil {
+	if err := mutes.api.Get("mutes", nil, &a); err != nil {
 		return nil, err
 	}
 	return a, nil

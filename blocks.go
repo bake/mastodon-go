@@ -1,11 +1,13 @@
 package mastodon
 
-import "net/http"
+type Blocks struct {
+	api *API
+}
 
-// GetBlocks returns an slice of accounts blocked by the authenticated user.
-func (app App) GetBlocks() ([]Account, error) {
+// Get returns an slice of accounts blocked by the authenticated user.
+func (blocks Blocks) Get() ([]Account, error) {
 	accs := []Account{}
-	if err := app.generic(http.MethodGet, "blocks", nil, &accs); err != nil {
+	if err := blocks.api.Get("blocks", nil, &accs); err != nil {
 		return nil, err
 	}
 	return accs, nil

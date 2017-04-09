@@ -1,12 +1,13 @@
 package mastodon
 
-import "net/http"
+type Favourites struct {
+	api *API
+}
 
-// GetFavourites returns an slice of statuses favourited by the authenticated
-// user.
-func (app App) GetFavourites() ([]Status, error) {
+// Get returns an slice of statuses favourited by the authenticated user.
+func (favourites Favourites) Get() ([]Status, error) {
 	s := []Status{}
-	if err := app.generic(http.MethodGet, "favourites", nil, &s); err != nil {
+	if err := favourites.api.Get("favourites", nil, &s); err != nil {
 		return nil, err
 	}
 	return s, nil

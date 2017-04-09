@@ -12,7 +12,7 @@ func main() {
 	token := flag.String("token", "", "Token")
 	flag.Parse()
 
-	app, err := mastodon.NewApp("mastodon-go", "urn:ietf:wg:oauth:2.0:oob", []string{"read", "write", "follow"}, "")
+	app, err := mastodon.NewApp("https://mastodon.social", "mastodon-go", "urn:ietf:wg:oauth:2.0:oob", []string{"read", "write", "follow"}, "")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -27,46 +27,23 @@ func main() {
 			log.Fatal(err)
 		}
 		app.SetToken(token.AccessToken)
-		fmt.Printf("access token: %s\n", app.Token.AccessToken)
+		fmt.Printf("access token: %s\n", app.API.AccessToken)
 	} else {
 		app.SetToken(*token)
 	}
 
-	user, err := app.VerifyCredentials()
+	user, err := app.Accounts.VerifyCredentials()
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Printf("signed in as %s\n", user.Username)
+	fmt.Printf("signed in as %s (%d)\n", user.Username, user.ID)
 
-	// users, err := app.SearchAccount("bak", 100)
-	// if err != nil {
-	// 	log.Fatal(err)
-	// }
-	// for _, user := range users {
-	// 	fmt.Println(user.Username)
-	// }
-
-	// followers, err := app.GetFollowers(user.ID)
-	// if err != nil {
-	// 	log.Fatal(err)
-	// }
-	// for _, follower := range followers {
-	// 	fmt.Printf("%d %s\n", follower.ID, follower.Username)
-	// }
-
-	// rels, err := app.Relationships(user.ID, 34733)
-	// if err != nil {
-	// 	log.Fatal(err)
-	// }
-	// for _, rel := range rels {
-	// 	fmt.Printf("%+v\n", rel)
-	// }
-
-	// statuses, err := app.GetStatuses(user.ID)
-	// if err != nil {
-	// 	log.Fatal(err)
-	// }
-	// for _, status := range statuses {
-	// 	fmt.Printf("%s: %s\n", status.CreatedAt, status.Content)
-	// }
+	followers, err := app.Accounts.Followers(user.ID)
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Printf("%d followers:\n", len(followers))
+	for _, follower := range followers {
+		fmt.Println(follower.Username)
+	}
 }

@@ -1,11 +1,13 @@
 package mastodon
 
-import "net/http"
+type Instances struct {
+	api *API
+}
 
-// Instance returns the current instance. Does not require authentication.
-func (app App) Instance() (Instance, error) {
+// Get returns the current instance. Does not require authentication.
+func (instances Instances) Get() (Instance, error) {
 	i := Instance{}
-	if err := app.generic(http.MethodGet, "follow_requests/reject", nil, &i); err != nil {
+	if err := instances.api.Get("follow_requests/reject", nil, &i); err != nil {
 		return i, err
 	}
 	return i, nil

@@ -1,32 +1,34 @@
 package mastodon
 
-import (
-	"fmt"
-	"net/http"
-)
+import "fmt"
 
-// GetNotifications returns a list of notifications for the authenticated user.
-func (app App) GetNotifications() ([]Notification, error) {
+type Notifications struct {
+	api *API
+}
+
+// Get returns a list of notifications for the authenticated user.
+func (notifications Notifications) Get() ([]Notification, error) {
 	n := []Notification{}
-	if err := app.generic(http.MethodGet, "notifications", nil, &n); err != nil {
+	if err := notifications.api.Get("notifications", nil, &n); err != nil {
 		return nil, err
 	}
 	return n, nil
 }
 
-// GetNotification returns the notification.
-func (app App) GetNotification(id int) (Notification, error) {
+// GetSingle returns the notification.
+func (notifications Notifications) GetSingle(id int) (Notification, error) {
 	n := Notification{}
 	end := fmt.Sprintf("notifications/%d", id)
-	if err := app.generic(http.MethodGet, end, nil, &n); err != nil {
+	if err := notifications.api.Get(end, nil, &n); err != nil {
 		return n, err
 	}
 	return n, nil
 }
 
-// ClearNotifications deletes all notifications from the Mastodon server for the authenticated user.
-func (app App) ClearNotifications() error {
-	if err := app.generic(http.MethodGet, "notifications/clear", nil, nil); err != nil {
+// Clear deletes all notifications from the Mastodon server for the
+// authenticated user.
+func (notifications Notifications) Clear() error {
+	if err := notifications.api.Get("notifications/clear", nil, nil); err != nil {
 		return err
 	}
 	return nil

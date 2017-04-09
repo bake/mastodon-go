@@ -1,45 +1,48 @@
 package mastodon
 
 import (
-	"encoding/json"
 	"fmt"
-	"net/http"
 	"net/url"
 	"strings"
 
 	"golang.org/x/oauth2"
 )
 
-const (
-	base = "https://mastodon.social/api/v1/"
-)
-
 // App holds the AccessToken and the OAuth2 config
 type App struct {
-	Token  *oauth2.Token
-	Config *oauth2.Config
+	Token          *oauth2.Token
+	Config         *oauth2.Config
+	API            *API
+	Accounts       *Accounts
+	Blocks         *Blocks
+	Favourites     *Favourites
+	FollowRequests *FollowRequests
+	Follows        *Follows
+	Instances      *Instances
+	Mutes          *Mutes
+	Notifications  *Notifications
+	Reports        *Reports
+	Search         *Search
+	Statuses       *Statuses
+	Timelines      *Timelines
 }
 
 // NewApp tries to register a new app
-func NewApp(name, uris string, scopes []string, website string) (*App, error) {
-	res, err := http.PostForm(base+"apps", url.Values{
+func NewApp(base, name, uris string, scopes []string, website string) (*App, error) {
+	api := API{
+		Base:   base,
+		Prefix: "/api/v1/",
+	}
+
+	v := url.Values{
 		"client_name":   {name},
 		"redirect_uris": {uris},
 		"scopes":        {strings.Join(scopes, " ")},
 		"website":       {website},
-	})
-	if err != nil {
-		return nil, fmt.Errorf("cound not registering new app: %v", err)
 	}
-	defer res.Body.Close()
-
-	app := struct {
-		ID           uint   `json:"id"`
-		ClientID     string `json:"client_id"`
-		ClientSecret string `json:"client_secret"`
-	}{}
-	if err := json.NewDecoder(res.Body).Decode(&app); err != nil {
-		return nil, fmt.Errorf("could not decode response: %v", err)
+	app := Application{}
+	if err := api.Post("apps", v, &app); err != nil {
+		return nil, err
 	}
 
 	return &App{
@@ -49,9 +52,42 @@ func NewApp(name, uris string, scopes []string, website string) (*App, error) {
 			RedirectURL:  "urn:ietf:wg:oauth:2.0:oob",
 			Scopes:       scopes,
 			Endpoint: oauth2.Endpoint{
-				AuthURL:  "https://mastodon.social/oauth/authorize",
-				TokenURL: "https://mastodon.social/oauth/token",
+				AuthURL:  api.Base + "/oauth/authorize",
+				TokenURL: api.Base + "/oauth/token",
 			},
 		},
+		API:            &api,
+		Accounts:       &Accounts{&api},
+		Blocks:         &Blocks{&api},
+		Favourites:     &Favourites{&api},
+		FollowRequests: &FollowRequests{&api},
+		Follows:        &Follows{&api},
+		Instances:      &Instances{&api},
+		Mutes:          &Mutes{&api},
+		Notifications:  &Notifications{&api},
+		Reports:        &Reports{&api},
+		Search:         &Search{&api},
+		Statuses:       &Statuses{&api},
+		Timelines:      &Timelines{&api},
 	}, nil
+}
+
+// AuthCodeURL builds a URL to obtain an AccessCode.
+func (app App) AuthCodeURL() string {
+	return app.Config.AuthCodeURL("state", oauth2.AccessTypeOffline)
+}
+
+// Exchange swaps an AccessCode with an AccessToken wich can be used to authenticate an user.
+func (app App) Exchange(code string) (*oauth2.Token, error) {
+	token, err := app.Config.Exchange(nil, code)
+	if err != nil {
+		return nil, fmt.Errorf("could not exchange access token: %v", err)
+	}
+	return token, nil
+}
+
+// SetToken saves the AccessToken in struct.
+func (app *App) SetToken(token string) {
+	fmt.Println("set token " + token)
+	app.API.AccessToken = token
 }

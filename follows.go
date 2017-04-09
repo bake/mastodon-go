@@ -1,15 +1,16 @@
 package mastodon
 
-import (
-	"net/http"
-	"net/url"
-)
+import "net/url"
+
+type Follows struct {
+	api *API
+}
 
 // Follows follow a remote user.
-func (app App) Follows(uri string) (Account, error) {
+func (follows Follows) Follow(uri string) (Account, error) {
 	a := Account{}
 	v := url.Values{"uri": {uri}}
-	if err := app.generic(http.MethodPost, "follows", v, &a); err != nil {
+	if err := follows.api.Post("follows", v, &a); err != nil {
 		return a, err
 	}
 	return a, nil
