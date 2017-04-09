@@ -62,6 +62,9 @@ func (statuses Statuses) Favourits(id int) ([]Account, error) {
 // Update posts and returns a new status.
 func (statuses Statuses) Update(status string, v url.Values) (Status, error) {
 	s := Status{}
+	if v == nil {
+		v = url.Values{}
+	}
 	v.Set("status", status)
 	if err := statuses.api.Post("statuses", v, &s); err != nil {
 		return s, err
