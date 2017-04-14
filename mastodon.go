@@ -45,11 +45,15 @@ func NewApp(base, name, uris string, scopes []string, website string) (*App, err
 		return nil, err
 	}
 
+	if uris == "" {
+		uris = "urn:ietf:wg:oauth:2.0:oob"
+	}
+
 	return &App{
 		Config: &oauth2.Config{
 			ClientID:     app.ClientID,
 			ClientSecret: app.ClientSecret,
-			RedirectURL:  "urn:ietf:wg:oauth:2.0:oob",
+			RedirectURL:  uris,
 			Scopes:       scopes,
 			Endpoint: oauth2.Endpoint{
 				AuthURL:  api.Base + "/oauth/authorize",
@@ -78,12 +82,12 @@ func (app App) AuthCodeURL() string {
 }
 
 // Exchange swaps an AccessCode with an AccessToken wich can be used to authenticate an user.
-func (app App) Exchange(code string) (*oauth2.Token, error) {
+func (app App) Exchange(code string) (string, error) {
 	token, err := app.Config.Exchange(nil, code)
 	if err != nil {
-		return nil, fmt.Errorf("could not exchange access token: %v", err)
+		return "", fmt.Errorf("could not exchange access token: %v", err)
 	}
-	return token, nil
+	return token.AccessToken, nil
 }
 
 // SetToken saves the AccessToken in struct.
