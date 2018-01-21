@@ -68,7 +68,7 @@ type Notification struct {
 	Type      string   `json:"type"`       // One of: "mention", "reblog", "favourite", "follow"
 	CreatedAt string   `json:"created_at"` // The time the notification was created
 	Account   *Account `json:"account"`    // The Account sending the notification to the user
-	Status    *Status  `json:"status"`     // The Status associated with the notification, if applicible
+	Status    *Status  `json:"status"`     // The Status associated with the notification, if applicable
 }
 
 type Relationship struct {

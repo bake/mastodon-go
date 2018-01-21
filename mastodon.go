@@ -82,7 +82,7 @@ func (app App) AuthCodeURL() string {
 	return app.Config.AuthCodeURL("state", oauth2.AccessTypeOffline)
 }
 
-// Exchange swaps an AccessCode with an AccessToken wich can be used to authenticate an user.
+// Exchange swaps an AccessCode with an AccessToken which can be used to authenticate an user.
 func (app App) Exchange(ctx context.Context, code string) (string, error) {
 	token, err := app.Config.Exchange(ctx, code)
 	if err != nil {
