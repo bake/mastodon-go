@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"flag"
 	"fmt"
 	"log"
@@ -22,7 +23,8 @@ func main() {
 		fmt.Printf("goto: %s\ntoken: ", url)
 		fmt.Scanf("%s", token)
 
-		token, err := app.Exchange(*token)
+		ctx := context.TODO()
+		token, err := app.Exchange(ctx, *token)
 		if err != nil {
 			log.Fatal(err)
 		}

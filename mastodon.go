@@ -1,6 +1,7 @@
 package mastodon
 
 import (
+	"context"
 	"fmt"
 	"net/url"
 	"strings"
@@ -82,8 +83,8 @@ func (app App) AuthCodeURL() string {
 }
 
 // Exchange swaps an AccessCode with an AccessToken wich can be used to authenticate an user.
-func (app App) Exchange(code string) (string, error) {
-	token, err := app.Config.Exchange(nil, code)
+func (app App) Exchange(ctx context.Context, code string) (string, error) {
+	token, err := app.Config.Exchange(ctx, code)
 	if err != nil {
 		return "", fmt.Errorf("could not exchange access token: %v", err)
 	}
