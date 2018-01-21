@@ -1,7 +1,7 @@
 package mastodon
 
 type Account struct {
-	ID          int    `json:"id"`              // The ID of the account
+	ID          string `json:"id"`              // The ID of the account
 	Username    string `json:"username"`        // The username of the account
 	Acct        string `json:"acct"`            // Equals username for local users, includes @domain for remote ones
 	DisplayName string `json:"display_name"`    // The account's display name
@@ -17,7 +17,7 @@ type Account struct {
 }
 
 type Application struct {
-	ID           uint   `json:"id"`
+	ID           string `json:"id"`
 	ClientID     string `json:"client_id"`
 	ClientSecret string `json:"client_secret"`
 	Name         string `json:"name"`    // Name of the app
@@ -25,7 +25,7 @@ type Application struct {
 }
 
 type Attachment struct {
-	ID         uint   `json:"id"`          // ID of the attachment
+	ID         string `json:"id"`          // ID of the attachment
 	Type       string `json:"type"`        // One of: "image", "video", "gifv"
 	URL        string `json:"url"`         // URL of the locally hosted version of the image
 	RemoteURL  string `json:"remote_url"`  // For remote images, the remote URL of the original image
@@ -57,14 +57,14 @@ type Instance struct {
 }
 
 type Mention struct {
-	ID       uint   `json:"id"`       // Account ID
+	ID       string `json:"id"`       // Account ID
 	URL      string `json:"url"`      // URL of user's profile (can be remote)
 	Username string `json:"username"` // The username of the account
 	Acct     string `json:"acct"`     // Equals username for local users, includes @domain for remote ones
 }
 
 type Notification struct {
-	ID        uint     `json:"id"`         // The notification ID
+	ID        string   `json:"id"`         // The notification ID
 	Type      string   `json:"type"`       // One of: "mention", "reblog", "favourite", "follow"
 	CreatedAt string   `json:"created_at"` // The time the notification was created
 	Account   *Account `json:"account"`    // The Account sending the notification to the user
@@ -80,7 +80,7 @@ type Relationship struct {
 }
 
 type Report struct {
-	ID          uint   `json:"id"`           // The ID of the report
+	ID          string `json:"id"`           // The ID of the report
 	ActionTaken string `json:"action_taken"` // The action taken in response to the report
 }
 
@@ -91,12 +91,12 @@ type Results struct {
 }
 
 type Status struct {
-	ID                 uint         `json:"id"`                     // The ID of the status
+	ID                 string       `json:"id"`                     // The ID of the status
 	URI                string       `json:"uri"`                    // A Fediverse-unique resource ID
 	URL                string       `json:"url"`                    // URL to the status page (can be remote)
 	Account            *Account     `json:"account"`                // The Account which posted the status
-	InReplyToID        uint         `json:"in_reply_to_id"`         // null or the ID of the status it replies to
-	InReplyToAccountID uint         `json:"in_reply_to_account_id"` // null or the ID of the account it replies to
+	InReplyToID        string       `json:"in_reply_to_id"`         // null or the ID of the status it replies to
+	InReplyToAccountID string       `json:"in_reply_to_account_id"` // null or the ID of the account it replies to
 	Reblog             *Status      `json:"reblog"`                 // null or the reblogged Status
 	Content            string       `json:"content"`                // Body of the status; this will contain HTML (remote HTML already sanitized)
 	CreatedAt          string       `json:"created_at"`             // The time the status was created
