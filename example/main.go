@@ -26,7 +26,7 @@ func main() {
 		if err != nil {
 			log.Fatal(err)
 		}
-		app.SetToken(token.AccessToken)
+		app.SetToken(token)
 		fmt.Printf("access token: %s\n", app.API.AccessToken)
 	} else {
 		app.SetToken(*token)
@@ -36,7 +36,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Printf("signed in as %s (%d)\n", user.Username, user.ID)
+	fmt.Printf("signed in as %s (%s)\n", user.Username, user.ID)
 
 	followers, err := app.Accounts.Followers(user.ID)
 	if err != nil {

@@ -2,7 +2,6 @@ package mastodon
 
 import (
 	"net/url"
-	"strconv"
 )
 
 type FollowRequests struct {
@@ -20,23 +19,17 @@ func (followRequests FollowRequests) Get() ([]Account, error) {
 }
 
 // Authorize authorizes a follow request.
-func (followRequests FollowRequests) Authorize(id int) error {
-	v := url.Values{"id": {strconv.Itoa(id)}}
-	if err := followRequests.api.Post("follow_requests/authorize", v, nil); err != nil {
-		return err
-	}
-	return nil
+func (followRequests FollowRequests) Authorize(id string) error {
+	v := url.Values{"id": {id}}
+	return followRequests.api.Post("follow_requests/authorize", v, nil)
 }
 
 // Reject rejects a follow request.
-func (followRequests FollowRequests) Reject(id int) error {
-	v := url.Values{"id": {strconv.Itoa(id)}}
-	if err := followRequests.api.Post("follow_requests/reject", v, nil); err != nil {
-		return err
-	}
-	return nil
+func (followRequests FollowRequests) Reject(id string) error {
+	v := url.Values{"id": {id}}
+	return followRequests.api.Post("follow_requests/reject", v, nil)
 }
 
-func (followRequests FollowRequests) RejectFalseIcons(id int) error {
+func (followRequests FollowRequests) RejectFalseIcons(id string) error {
 	return followRequests.Reject(id)
 }

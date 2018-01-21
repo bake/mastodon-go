@@ -10,9 +10,9 @@ type Statuses struct {
 }
 
 // Get returns a status.
-func (statuses Statuses) Get(id int) (Status, error) {
+func (statuses Statuses) Get(id string) (Status, error) {
 	s := Status{}
-	end := fmt.Sprintf("statuses/%d", id)
+	end := fmt.Sprintf("statuses/%s", id)
 	if err := statuses.api.Get(end, nil, &s); err != nil {
 		return s, err
 	}
@@ -20,9 +20,9 @@ func (statuses Statuses) Get(id int) (Status, error) {
 }
 
 // Context returns a context.
-func (statuses Statuses) Context(id int) (Context, error) {
+func (statuses Statuses) Context(id string) (Context, error) {
 	c := Context{}
-	end := fmt.Sprintf("statuses/%d/context", id)
+	end := fmt.Sprintf("statuses/%s/context", id)
 	if err := statuses.api.Get(end, nil, &c); err != nil {
 		return c, err
 	}
@@ -30,9 +30,9 @@ func (statuses Statuses) Context(id int) (Context, error) {
 }
 
 // Card returns a card.
-func (statuses Statuses) Card(id int) (Card, error) {
+func (statuses Statuses) Card(id string) (Card, error) {
 	c := Card{}
-	end := fmt.Sprintf("statuses/%d/card", id)
+	end := fmt.Sprintf("statuses/%s/card", id)
 	if err := statuses.api.Get(end, nil, &c); err != nil {
 		return c, err
 	}
@@ -40,9 +40,9 @@ func (statuses Statuses) Card(id int) (Card, error) {
 }
 
 // Reblogs returns an array of accounts.
-func (statuses Statuses) Reblogs(id int) ([]Account, error) {
+func (statuses Statuses) Reblogs(id string) ([]Account, error) {
 	a := []Account{}
-	end := fmt.Sprintf("statuses/%d/reblogged_by", id)
+	end := fmt.Sprintf("statuses/%s/reblogged_by", id)
 	if err := statuses.api.Get(end, nil, &a); err != nil {
 		return a, err
 	}
@@ -50,9 +50,9 @@ func (statuses Statuses) Reblogs(id int) ([]Account, error) {
 }
 
 // Favourits returns an array of accounts.
-func (statuses Statuses) Favourits(id int) ([]Account, error) {
+func (statuses Statuses) Favourits(id string) ([]Account, error) {
 	a := []Account{}
-	end := fmt.Sprintf("statuses/%d/favourited_by", id)
+	end := fmt.Sprintf("statuses/%s/favourited_by", id)
 	if err := statuses.api.Get(end, nil, &a); err != nil {
 		return a, err
 	}
@@ -78,18 +78,15 @@ func (statuses Statuses) Update(status string, v url.Values) (Status, error) {
 }
 
 // Delete deletes a status.
-func (statuses Statuses) Delete(id int) error {
-	end := fmt.Sprintf("statuses/%d", id)
-	if err := statuses.api.Delete(end, nil, nil); err != nil {
-		return err
-	}
-	return nil
+func (statuses Statuses) Delete(id string) error {
+	end := fmt.Sprintf("statuses/%s", id)
+	return statuses.api.Delete(end, nil, nil)
 }
 
 // Reblog rebloggs a status.
-func (statuses Statuses) Reblog(id int) (Status, error) {
+func (statuses Statuses) Reblog(id string) (Status, error) {
 	s := Status{}
-	end := fmt.Sprintf("statuses/%d/reblog", id)
+	end := fmt.Sprintf("statuses/%s/reblog", id)
 	if err := statuses.api.Post(end, nil, &s); err != nil {
 		return s, err
 	}
@@ -97,9 +94,9 @@ func (statuses Statuses) Reblog(id int) (Status, error) {
 }
 
 // Unreblog deletes a reblogged status.
-func (statuses Statuses) Unreblog(id int) (Status, error) {
+func (statuses Statuses) Unreblog(id string) (Status, error) {
 	s := Status{}
-	end := fmt.Sprintf("statuses/%d/unreblog", id)
+	end := fmt.Sprintf("statuses/%s/unreblog", id)
 	if err := statuses.api.Post(end, nil, &s); err != nil {
 		return s, err
 	}
@@ -107,9 +104,9 @@ func (statuses Statuses) Unreblog(id int) (Status, error) {
 }
 
 // Favourite favourites a status.
-func (statuses Statuses) Favourite(id int) (Status, error) {
+func (statuses Statuses) Favourite(id string) (Status, error) {
 	s := Status{}
-	end := fmt.Sprintf("statuses/%d/favourite", id)
+	end := fmt.Sprintf("statuses/%s/favourite", id)
 	if err := statuses.api.Post(end, nil, &s); err != nil {
 		return s, err
 	}
@@ -117,9 +114,9 @@ func (statuses Statuses) Favourite(id int) (Status, error) {
 }
 
 // Unfavourite deletes a favourited status.
-func (statuses Statuses) Unfavourite(id int) (Status, error) {
+func (statuses Statuses) Unfavourite(id string) (Status, error) {
 	s := Status{}
-	end := fmt.Sprintf("statuses/%d/unfavourite", id)
+	end := fmt.Sprintf("statuses/%s/unfavourite", id)
 	if err := statuses.api.Post(end, nil, &s); err != nil {
 		return s, err
 	}
