@@ -41,8 +41,8 @@ func (statuses Statuses) Reblogs(id string) ([]Account, error) {
 	return a, nil
 }
 
-// Favourits returns an array of accounts.
-func (statuses Statuses) Favourits(id string) ([]Account, error) {
+// Favourites returns an array of accounts.
+func (statuses Statuses) Favourites(id string) ([]Account, error) {
 	a := []Account{}
 	end := fmt.Sprintf("statuses/%s/favourited_by", id)
 	return a, statuses.api.Get(end, nil, &a)

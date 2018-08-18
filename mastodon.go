@@ -8,7 +8,7 @@ import (
 	"golang.org/x/oauth2"
 )
 
-// App holds the AccessToken and the OAuth2 config
+// App holds the AccessToken and the OAuth2 config.
 type App struct {
 	Token          *oauth2.Token
 	Config         *oauth2.Config
@@ -27,7 +27,7 @@ type App struct {
 	Timelines      *Timelines
 }
 
-// NewApp tries to register a new app
+// NewApp tries to register a new app.
 func NewApp(base, name, uris string, scopes []string, website string) (*App, error) {
 	api := API{
 		Base:   base,
@@ -81,7 +81,8 @@ func (app App) AuthCodeURL() string {
 	return app.Config.AuthCodeURL("state", oauth2.AccessTypeOffline)
 }
 
-// Exchange swaps an AccessCode with an AccessToken wich can be used to authenticate an user.
+// Exchange swaps an AccessCode with an AccessToken which can be used to
+// authenticate an user.
 func (app App) Exchange(code string) (string, error) {
 	token, err := app.Config.Exchange(nil, code)
 	if err != nil {

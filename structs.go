@@ -1,5 +1,6 @@
 package mastodon
 
+// Account holds informations about an account.
 type Account struct {
 	ID          string `json:"id"`              // The ID of the account
 	Username    string `json:"username"`        // The username of the account
@@ -16,6 +17,7 @@ type Account struct {
 	Statuses    int    `json:"statuses_count"`  // The number of statuses the account has made
 }
 
+// Application holds informations about an application.
 type Application struct {
 	ID           string `json:"id"`
 	Name         string `json:"name"`    // Name of the app
@@ -24,6 +26,7 @@ type Application struct {
 	ClientSecret string `json:"client_secret"`
 }
 
+// Attachment holds informations about an attachment.
 type Attachment struct {
 	ID         string `json:"id"`          // ID of the attachment
 	Type       string `json:"type"`        // One of: "image", "video", "gifv"
@@ -33,6 +36,7 @@ type Attachment struct {
 	TextURL    string `json:"text_url"`    // Shorter URL for the image, for insertion into text (only present on local images)
 }
 
+// Card holds informations about a card.
 type Card struct {
 	URL         string `json:"url"`         // The url associated with the card
 	Title       string `json:"title"`       // The title of the card
@@ -40,15 +44,18 @@ type Card struct {
 	Image       string `json:"image"`       // The image associated with the card, if any
 }
 
+// Context holds informations about a statuses context.
 type Context struct {
 	Ancestors   []Status `json:"ancestors"`   // The ancestors of the status in the conversation, as a list of Statuses
 	Descendants []Status `json:"descendants"` // The descendants of the status in the conversation, as a list of Statuses
 }
 
+// Error holds informations about an error.
 type Error struct {
 	Error string `json:"error"` // A textual description of the error
 }
 
+// Instance holds informations about an instance.
 type Instance struct {
 	URI         string `json:"uri"`         // URI of the current instance
 	Title       string `json:"title"`       // The instance's title
@@ -56,6 +63,7 @@ type Instance struct {
 	Email       string `json:"email"`       // An email address which can be used to contact the instance administrator
 }
 
+// Mention holds informations about a mention.
 type Mention struct {
 	ID       string `json:"id"`       // Account ID
 	URL      string `json:"url"`      // URL of user's profile (can be remote)
@@ -63,14 +71,16 @@ type Mention struct {
 	Acct     string `json:"acct"`     // Equals username for local users, includes @domain for remote ones
 }
 
+// Notification holds informations about a notification.
 type Notification struct {
 	ID        string   `json:"id"`         // The notification ID
 	Type      string   `json:"type"`       // One of: "mention", "reblog", "favourite", "follow"
 	CreatedAt string   `json:"created_at"` // The time the notification was created
 	Account   *Account `json:"account"`    // The Account sending the notification to the user
-	Status    *Status  `json:"status"`     // The Status associated with the notification, if applicible
+	Status    *Status  `json:"status"`     // The Status associated with the notification, if applicable
 }
 
+// Relationship holds informations about a relationship.
 type Relationship struct {
 	Following  bool `json:"following"`   // Whether the user is currently following the account
 	FollowedBy bool `json:"followed_by"` // Whether the user is currently being followed by the account
@@ -79,17 +89,20 @@ type Relationship struct {
 	Requested  bool `json:"requested"`   // Whether the user has requested to follow the account
 }
 
+// Report holds informations about a report.
 type Report struct {
 	ID          string `json:"id"`           // The ID of the report
 	ActionTaken string `json:"action_taken"` // The action taken in response to the report
 }
 
+// Results holds informations about results.
 type Results struct {
 	Accounts []Account `json:"accounts"` // An array of matched Accounts
 	Statuses []Status  `json:"statuses"` // An array of matchhed Statuses
 	Hashtags []string  `json:"hashtags"` // An array of matched hashtags, as strings
 }
 
+// Status holds informations about a status.
 type Status struct {
 	ID                 string       `json:"id"`                     // The ID of the status
 	URI                string       `json:"uri"`                    // A Fediverse-unique resource ID
@@ -113,7 +126,8 @@ type Status struct {
 	Application        *Application `json:"application"`            // Application from which the status was posted
 }
 
+// Tag holds informations about a tag.
 type Tag struct {
 	Name string `json:"name"` // The hashtag, not including the preceding #
-	Url  string `json:"url"`  // The URL of the hashtag
+	URL  string `json:"url"`  // The URL of the hashtag
 }
