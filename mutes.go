@@ -1,5 +1,6 @@
 package mastodon
 
+// Mutes implements methods under /mutes.
 type Mutes struct {
 	api *API
 }

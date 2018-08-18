@@ -2,6 +2,7 @@ package mastodon
 
 import "fmt"
 
+// Notifications implements methods under /notifications.
 type Notifications struct {
 	api *API
 }
@@ -15,7 +16,7 @@ func (notifications Notifications) Get() ([]Notification, error) {
 // GetSingle returns the notification.
 func (notifications Notifications) GetSingle(id string) (Notification, error) {
 	n := Notification{}
-	end := fmt.Sprintf("notifications/%d", id)
+	end := fmt.Sprintf("notifications/%s", id)
 	return n, notifications.api.Get(end, nil, &n)
 }
 

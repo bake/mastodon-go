@@ -4,6 +4,7 @@ import (
 	"net/url"
 )
 
+// Reports implements methods under /reports.
 type Reports struct {
 	api *API
 }

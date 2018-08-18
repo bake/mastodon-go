@@ -2,6 +2,7 @@ package mastodon
 
 import "net/url"
 
+// Search implements methods under /search.
 type Search struct {
 	api *API
 }

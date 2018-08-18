@@ -5,6 +5,7 @@ import (
 	"net/url"
 )
 
+// Timelines implements methods under /timelines.
 type Timelines struct {
 	api *API
 }

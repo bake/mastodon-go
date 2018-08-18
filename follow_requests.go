@@ -4,6 +4,7 @@ import (
 	"net/url"
 )
 
+// FollowRequests implements methods under /follow_requests.
 type FollowRequests struct {
 	api *API
 }
@@ -27,7 +28,7 @@ func (followRequests FollowRequests) Reject(id string) error {
 	return followRequests.api.Post("follow_requests/reject", v, nil)
 }
 
-// RejectFalsIcons rejects a follow request.
+// RejectFalseIcons rejects a follow request.
 func (followRequests FollowRequests) RejectFalseIcons(id string) error {
 	return followRequests.Reject(id)
 }

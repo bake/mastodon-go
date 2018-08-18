@@ -1,5 +1,6 @@
 package mastodon
 
+// Favourites implements methods under /favourites.
 type Favourites struct {
 	api *API
 }

@@ -6,6 +6,7 @@ import (
 	"strconv"
 )
 
+// Accounts implements methods under /accounts.
 type Accounts struct {
 	api *API
 }
@@ -19,21 +20,21 @@ func (accounts Accounts) VerifyCredentials() (Account, error) {
 // Get returns an account.
 func (accounts Accounts) Get(id string) (Account, error) {
 	acc := Account{}
-	end := fmt.Sprintf("accounts/%d", id)
+	end := fmt.Sprintf("accounts/%s", id)
 	return acc, accounts.api.Get(end, nil, &acc)
 }
 
 // Followers returns an slice of following accounts.
 func (accounts Accounts) Followers(id string) ([]Account, error) {
 	accs := []Account{}
-	end := fmt.Sprintf("accounts/%d/followers", id)
+	end := fmt.Sprintf("accounts/%s/followers", id)
 	return accs, accounts.api.Get(end, nil, &accs)
 }
 
 // Following returns an slice of followed accounts.
 func (accounts Accounts) Following(id string) ([]Account, error) {
 	accs := []Account{}
-	end := fmt.Sprintf("accounts/%d/following", id)
+	end := fmt.Sprintf("accounts/%s/following", id)
 	return accs, accounts.api.Get(end, nil, &accs)
 }
 
@@ -41,7 +42,7 @@ func (accounts Accounts) Following(id string) ([]Account, error) {
 // only_media: Only return statuses that have media attachments
 // exclude_replies: Skip statuses that reply to other statuses
 func (accounts Accounts) Statuses(id string, params url.Values) ([]Status, error) {
-	end := fmt.Sprintf("accounts/%d/statuses", id)
+	end := fmt.Sprintf("accounts/%s/statuses", id)
 	statuses := []Status{}
 	return statuses, accounts.api.Get(end, params, &statuses)
 }
@@ -49,42 +50,42 @@ func (accounts Accounts) Statuses(id string, params url.Values) ([]Status, error
 // Follow an user.
 func (accounts Accounts) Follow(id string) (Account, error) {
 	acc := Account{}
-	end := fmt.Sprintf("accounts/%d/follow", id)
+	end := fmt.Sprintf("accounts/%s/follow", id)
 	return acc, accounts.api.Get(end, nil, &acc)
 }
 
 // Unfollow an account
 func (accounts Accounts) Unfollow(id string) (Account, error) {
 	acc := Account{}
-	end := fmt.Sprintf("accounts/%d/unfollow", id)
+	end := fmt.Sprintf("accounts/%s/unfollow", id)
 	return acc, accounts.api.Post(end, nil, &acc)
 }
 
 // Block an account
 func (accounts Accounts) Block(id string) (Account, error) {
 	acc := Account{}
-	end := fmt.Sprintf("accounts/%d/block", id)
+	end := fmt.Sprintf("accounts/%s/block", id)
 	return acc, accounts.api.Post(end, nil, &acc)
 }
 
 // Unblock an account.
 func (accounts Accounts) Unblock(id string) (Account, error) {
 	acc := Account{}
-	end := fmt.Sprintf("accounts/%d/unblock", id)
+	end := fmt.Sprintf("accounts/%s/unblock", id)
 	return acc, accounts.api.Post(end, nil, &acc)
 }
 
 // Mute an account.
 func (accounts Accounts) Mute(id string) (Account, error) {
 	acc := Account{}
-	end := fmt.Sprintf("accounts/%d/mute", id)
+	end := fmt.Sprintf("accounts/%s/mute", id)
 	return acc, accounts.api.Post(end, nil, &acc)
 }
 
 // Unmute an user.
 func (accounts Accounts) Unmute(id string) (Account, error) {
 	acc := Account{}
-	end := fmt.Sprintf("accounts/%d/unmute", id)
+	end := fmt.Sprintf("accounts/%s/unmute", id)
 	return acc, accounts.api.Post(end, nil, &acc)
 }
 

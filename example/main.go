@@ -27,7 +27,7 @@ func main() {
 			log.Fatal(err)
 		}
 		app.SetToken(token)
-		fmt.Printf("access token: %s\n", app.API)
+		fmt.Printf("access token: %s\n", token)
 	} else {
 		app.SetToken(*token)
 	}

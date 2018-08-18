@@ -10,6 +10,7 @@ import (
 	"net/url"
 )
 
+// API contains necessary informations to work with Mastodons API.
 type API struct {
 	Base        string
 	Prefix      string

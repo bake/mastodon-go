@@ -1,5 +1,6 @@
 package mastodon
 
+// Blocks implements methods under /blocks.
 type Blocks struct {
 	api *API
 }
