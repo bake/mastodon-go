@@ -13,112 +13,79 @@ type Accounts struct {
 // VerifyCredentials returns the authenticated user's account.
 func (accounts Accounts) VerifyCredentials() (Account, error) {
 	acc := Account{}
-	if err := accounts.api.Get("accounts/verify_credentials", nil, &acc); err != nil {
-		return acc, err
-	}
-	return acc, nil
+	return acc, accounts.api.Get("accounts/verify_credentials", nil, &acc)
 }
 
 // Get returns an account.
 func (accounts Accounts) Get(id string) (Account, error) {
 	acc := Account{}
-	end := fmt.Sprintf("accounts/%s", id)
-	if err := accounts.api.Get(end, nil, &acc); err != nil {
-		return acc, err
-	}
-	return acc, nil
+	end := fmt.Sprintf("accounts/%d", id)
+	return acc, accounts.api.Get(end, nil, &acc)
 }
 
 // Followers returns an slice of following accounts.
 func (accounts Accounts) Followers(id string) ([]Account, error) {
 	accs := []Account{}
-	end := fmt.Sprintf("accounts/%s/followers", id)
-	if err := accounts.api.Get(end, nil, &accs); err != nil {
-		return accs, err
-	}
-	return accs, nil
+	end := fmt.Sprintf("accounts/%d/followers", id)
+	return accs, accounts.api.Get(end, nil, &accs)
 }
 
 // Following returns an slice of followed accounts.
 func (accounts Accounts) Following(id string) ([]Account, error) {
 	accs := []Account{}
-	end := fmt.Sprintf("accounts/%s/following", id)
-	if err := accounts.api.Get(end, nil, &accs); err != nil {
-		return accs, err
-	}
-	return accs, nil
+	end := fmt.Sprintf("accounts/%d/following", id)
+	return accs, accounts.api.Get(end, nil, &accs)
 }
 
 // Statuses returns an slice of statuses. Accepted params are:
 // only_media: Only return statuses that have media attachments
 // exclude_replies: Skip statuses that reply to other statuses
 func (accounts Accounts) Statuses(id string, params url.Values) ([]Status, error) {
-	end := fmt.Sprintf("accounts/%s/statuses", id)
+	end := fmt.Sprintf("accounts/%d/statuses", id)
 	statuses := []Status{}
-	if err := accounts.api.Get(end, params, &statuses); err != nil {
-		return statuses, err
-	}
-	return statuses, nil
+	return statuses, accounts.api.Get(end, params, &statuses)
 }
 
 // Follow an user.
 func (accounts Accounts) Follow(id string) (Account, error) {
-	end := fmt.Sprintf("accounts/%s/follow", id)
 	acc := Account{}
-	if err := accounts.api.Get(end, nil, &acc); err != nil {
-		return acc, err
-	}
-	return acc, nil
+	end := fmt.Sprintf("accounts/%d/follow", id)
+	return acc, accounts.api.Get(end, nil, &acc)
 }
 
 // Unfollow an account
 func (accounts Accounts) Unfollow(id string) (Account, error) {
 	acc := Account{}
-	end := fmt.Sprintf("accounts/%s/unfollow", id)
-	if err := accounts.api.Post(end, nil, &acc); err != nil {
-		return acc, err
-	}
-	return acc, nil
+	end := fmt.Sprintf("accounts/%d/unfollow", id)
+	return acc, accounts.api.Post(end, nil, &acc)
 }
 
 // Block an account
 func (accounts Accounts) Block(id string) (Account, error) {
 	acc := Account{}
-	end := fmt.Sprintf("accounts/%s/block", id)
-	if err := accounts.api.Post(end, nil, &acc); err != nil {
-		return acc, err
-	}
-	return acc, nil
+	end := fmt.Sprintf("accounts/%d/block", id)
+	return acc, accounts.api.Post(end, nil, &acc)
 }
 
 // Unblock an account.
 func (accounts Accounts) Unblock(id string) (Account, error) {
-	end := fmt.Sprintf("accounts/%s/unblock", id)
 	acc := Account{}
-	if err := accounts.api.Post(end, nil, &acc); err != nil {
-		return acc, err
-	}
-	return acc, nil
+	end := fmt.Sprintf("accounts/%d/unblock", id)
+	return acc, accounts.api.Post(end, nil, &acc)
 }
 
 // Mute an account.
 func (accounts Accounts) Mute(id string) (Account, error) {
 	acc := Account{}
-	end := fmt.Sprintf("accounts/%s/mute", id)
-	if err := accounts.api.Post(end, nil, &acc); err != nil {
-		return acc, err
-	}
-	return acc, nil
+	end := fmt.Sprintf("accounts/%d/mute", id)
+	return acc, accounts.api.Post(end, nil, &acc)
 }
 
 // Unmute an user.
 func (accounts Accounts) Unmute(id string) (Account, error) {
 	acc := Account{}
-	end := fmt.Sprintf("accounts/%s/unmute", id)
-	if err := accounts.api.Post(end, nil, &acc); err != nil {
-		return acc, err
-	}
-	return acc, nil
+	end := fmt.Sprintf("accounts/%d/unmute", id)
+	return acc, accounts.api.Post(end, nil, &acc)
 }
 
 // Relationships returns an slice of Relationships of the current user to a
@@ -128,25 +95,19 @@ func (accounts Accounts) Relationships(ids ...int) ([]Relationship, error) {
 	for _, id := range ids {
 		idss = append(idss, strconv.Itoa(id))
 	}
-	v := url.Values{"id": idss}
 	rels := []Relationship{}
-	if err := accounts.api.Get("accounts/relationships", v, &rels); err != nil {
-		return rels, err
-	}
-	return rels, nil
+	v := url.Values{"id": idss}
+	return rels, accounts.api.Get("accounts/relationships", v, &rels)
 }
 
 // Search returns an slice of matching Accounts. Will lookup an account
 // remotely if the search term is in the username@domain format and not yet in
 // the database.
 func (accounts Accounts) Search(q string, limit int) ([]Account, error) {
+	accs := []Account{}
 	v := url.Values{
 		"q":     {q},
 		"limit": {strconv.Itoa(limit)},
 	}
-	accs := []Account{}
-	if err := accounts.api.Get("accounts/search", v, &accs); err != nil {
-		return nil, err
-	}
-	return accs, nil
+	return accs, accounts.api.Get("accounts/search", v, &accs)
 }

@@ -1,7 +1,6 @@
 package main
 
 import (
-	"context"
 	"flag"
 	"fmt"
 	"log"
@@ -23,13 +22,12 @@ func main() {
 		fmt.Printf("goto: %s\ntoken: ", url)
 		fmt.Scanf("%s", token)
 
-		ctx := context.TODO()
-		token, err := app.Exchange(ctx, *token)
+		token, err := app.Exchange(*token)
 		if err != nil {
 			log.Fatal(err)
 		}
 		app.SetToken(token)
-		fmt.Printf("access token: %s\n", app.API.AccessToken)
+		fmt.Printf("access token: %s\n", app.API)
 	} else {
 		app.SetToken(*token)
 	}

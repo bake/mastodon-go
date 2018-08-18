@@ -1,42 +1,11 @@
 # mastodon-go
 
-## Usage
+A Go library for Mastodon.
 
-```go
-func main() {
-	app, err := mastodon.NewApp("https://mastodon.social", "mastodon-go", "urn:ietf:wg:oauth:2.0:oob", []string{"read", "write", "follow"}, "")
-	if err != nil {
-		log.Fatal(err)
-	}
+[![GoDoc](https://godoc.org/github.com/BakeRolls/mastodon-go?status.png)](https://godoc.org/github.com/BakeRolls/mastodon-go)
 
-	// redirect user to auth url (skip if you stored an auth token)
-	url := app.AuthCodeURL()
-	fmt.Printf("goto: %s\ntoken: ", url)
-	code := ""
-	fmt.Scanf("%s", &code)
-
-	// exchange auth code for auth token
-	token, err := app.Exchange(code)
-	if err != nil {
-		log.Fatal(err)
-	}
-	app.SetToken(token)
-	fmt.Printf("access token: %s\n", token)
-
-	// request authenticated user
-	user, err := app.Accounts.VerifyCredentials()
-	if err != nil {
-		log.Fatal(err)
-	}
-	fmt.Printf("signed in as %s (%d)\n", user.Username, user.ID)
-
-	// toot!
-	status, err := app.Statuses.Update("toot!", nil)
-	if err != nil {
-		log.Fatal(err)
-	}
-	fmt.Printf("tooted: %s\n", status.URL)
-}
+```bash
+$ go get github.com/BakeRolls/mastodon-go
 ```
 
-See [example/main.go](example/main.go).
+See [example/main.go](example/main.go) for an example on how to use this library.

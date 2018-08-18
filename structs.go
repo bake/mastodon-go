@@ -11,9 +11,9 @@ type Account struct {
 	Header      string `json:"header"`          // URL to the header image
 	Locked      bool   `json:"locked"`          // Boolean for when the account cannot be followed without waiting for approval first
 	CreatedAt   string `json:"created_at"`      // The time the account was created
-	Followers   int    `json:"followers_count"` // The number of followers for the account
-	Following   int    `json:"following_count"` // The number of accounts the given account is following
-	Statuses    int    `json:"statuses_count"`  // The number of statuses the account has made
+	Followers   string `json:"followers_count"` // The number of followers for the account
+	Following   string `json:"following_count"` // The number of accounts the given account is following
+	Statuses    string `json:"statuses_count"`  // The number of statuses the account has made
 }
 
 type Application struct {
@@ -68,7 +68,7 @@ type Notification struct {
 	Type      string   `json:"type"`       // One of: "mention", "reblog", "favourite", "follow"
 	CreatedAt string   `json:"created_at"` // The time the notification was created
 	Account   *Account `json:"account"`    // The Account sending the notification to the user
-	Status    *Status  `json:"status"`     // The Status associated with the notification, if applicable
+	Status    *Status  `json:"status"`     // The Status associated with the notification, if applicible
 }
 
 type Relationship struct {
@@ -100,8 +100,8 @@ type Status struct {
 	Reblog             *Status      `json:"reblog"`                 // null or the reblogged Status
 	Content            string       `json:"content"`                // Body of the status; this will contain HTML (remote HTML already sanitized)
 	CreatedAt          string       `json:"created_at"`             // The time the status was created
-	Reblogs            uint         `json:"reblogs_count"`          // The number of reblogs for the status
-	Favourites         uint         `json:"favourites_count"`       // The number of favourites for the status
+	Reblogs            string       `json:"reblogs_count"`          // The number of reblogs for the status
+	Favourites         string       `json:"favourites_count"`       // The number of favourites for the status
 	Reblogged          bool         `json:"reblogged"`              // Whether the authenticated user has reblogged the status
 	Favourited         bool         `json:"favourited"`             // Whether the authenticated user has favourited the status
 	Sensitive          bool         `json:"sensitive"`              // Whether media attachments should be hidden by default

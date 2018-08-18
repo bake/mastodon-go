@@ -2,7 +2,6 @@ package mastodon
 
 import (
 	"net/url"
-	"strconv"
 )
 
 type Reports struct {
@@ -12,22 +11,16 @@ type Reports struct {
 // Get returns a list of reports made by the authenticated user.
 func (reports Reports) Get() ([]Report, error) {
 	r := []Report{}
-	if err := reports.api.Get("reports", nil, &r); err != nil {
-		return r, err
-	}
-	return r, nil
+	return r, reports.api.Get("reports", nil, &r)
 }
 
 // Report reports a user and returns the finished report.
-func (reports Reports) Report(account, status int, comment string) (Report, error) {
+func (reports Reports) Report(account, status string, comment string) (Report, error) {
 	r := Report{}
 	v := url.Values{
-		"account_id": {strconv.Itoa(account)},
-		"status_ids": {strconv.Itoa(status)},
+		"account_id": {account},
+		"status_ids": {status},
 		"comment":    {comment},
 	}
-	if err := reports.api.Post("reports", v, &r); err != nil {
-		return r, err
-	}
-	return r, nil
+	return r, reports.api.Post("reports", v, &r)
 }

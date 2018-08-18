@@ -9,20 +9,14 @@ type Notifications struct {
 // Get returns a list of notifications for the authenticated user.
 func (notifications Notifications) Get() ([]Notification, error) {
 	n := []Notification{}
-	if err := notifications.api.Get("notifications", nil, &n); err != nil {
-		return nil, err
-	}
-	return n, nil
+	return n, notifications.api.Get("notifications", nil, &n)
 }
 
 // GetSingle returns the notification.
 func (notifications Notifications) GetSingle(id string) (Notification, error) {
 	n := Notification{}
-	end := fmt.Sprintf("notifications/%s", id)
-	if err := notifications.api.Get(end, nil, &n); err != nil {
-		return n, err
-	}
-	return n, nil
+	end := fmt.Sprintf("notifications/%d", id)
+	return n, notifications.api.Get(end, nil, &n)
 }
 
 // Clear deletes all notifications from the Mastodon server for the

@@ -7,8 +7,5 @@ type Instances struct {
 // Get returns the current instance. Does not require authentication.
 func (instances Instances) Get() (Instance, error) {
 	i := Instance{}
-	if err := instances.api.Get("follow_requests/reject", nil, &i); err != nil {
-		return i, err
-	}
-	return i, nil
+	return i, instances.api.Get("follow_requests/reject", nil, &i)
 }

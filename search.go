@@ -18,8 +18,5 @@ func (search Search) Search(q string, resolve bool) (Results, error) {
 	if resolve {
 		v.Set("resolve", "true")
 	}
-	if err := search.api.Get("search", v, &r); err != nil {
-		return r, err
-	}
-	return r, nil
+	return r, search.api.Get("search", v, &r)
 }

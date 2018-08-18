@@ -72,7 +72,6 @@ func (api API) generic(method, endpoint string, values url.Values, dest interfac
 	if err := json.NewDecoder(r).Decode(dest); err != nil {
 		return fmt.Errorf("could not decode %s: %v", endpoint, err)
 	}
-
 	return nil
 }
 

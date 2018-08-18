@@ -12,10 +12,7 @@ type FollowRequests struct {
 // authenticated user.
 func (followRequests FollowRequests) Get() ([]Account, error) {
 	a := []Account{}
-	if err := followRequests.api.Get("follow_requests", nil, &a); err != nil {
-		return nil, err
-	}
-	return a, nil
+	return a, followRequests.api.Get("follow_requests", nil, &a)
 }
 
 // Authorize authorizes a follow request.
@@ -30,6 +27,7 @@ func (followRequests FollowRequests) Reject(id string) error {
 	return followRequests.api.Post("follow_requests/reject", v, nil)
 }
 
+// RejectFalsIcons rejects a follow request.
 func (followRequests FollowRequests) RejectFalseIcons(id string) error {
 	return followRequests.Reject(id)
 }
